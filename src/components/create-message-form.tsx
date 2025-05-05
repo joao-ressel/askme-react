@@ -9,8 +9,11 @@ export function CreateMessageForm() {
     throw new Error("Messages components must be used within room page");
   }
 
-  async function createMessageAction(data: FormData) {
-    const message = data.get("message")?.toString();
+  async function createMessageAction(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const formData = new FormData(event.target as HTMLFormElement);
+    const message = formData.get("message")?.toString();
 
     if (!message || !roomId) {
       return;
@@ -25,13 +28,13 @@ export function CreateMessageForm() {
 
   return (
     <form
-      action={createMessageAction}
-      className="focus-within:ring-1 ring-orange-400 ring-offset-2  bg-zinc-900 flex w-full items-center gap-2 p-2 rounded-xl border border-zinc-800"
+      onSubmit={createMessageAction} // Use onSubmit instead of action
+      className="focus-within:ring-1 ring-orange-400 ring-offset-2 bg-zinc-900 flex w-full items-center gap-2 p-2 rounded-xl border border-zinc-800"
     >
       <input
         className="bg-transparent text-sm flex-1 mx-1 outline-none text-zinc-100 placeholder:text-zinc-500"
         type="text"
-        name="theme"
+        name="message" // Ensure the input name matches the expected key in FormData
         autoComplete="off"
         placeholder="Qual sua pergunta"
       />

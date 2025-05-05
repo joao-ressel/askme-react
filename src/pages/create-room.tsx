@@ -16,9 +16,9 @@ export function CreateRoom() {
     }
 
     try {
-      const { roomId } = await createRoom({ theme });
+      const { id } = await createRoom({ theme });
       console.log(theme);
-      navigate(`/room/${roomId}`);
+      navigate(`/room/${id}`);
     } catch {
       toast.error("Falha ao criar sala");
     }
@@ -33,8 +33,12 @@ export function CreateRoom() {
         </p>
 
         <form
-          action={handleCreateRoom}
-          className="focus-within:ring-1 ring-orange-400 ring-offset-2  bg-zinc-900 flex w-[100%] items-center gap-2 p-2 rounded-xl border border-zinc-800"
+          onSubmit={(event) => {
+            event.preventDefault();
+            const formData = new FormData(event.currentTarget);
+            handleCreateRoom(formData);
+          }}
+          className="focus-within:ring-1 ring-orange-400 ring-offset-2 bg-zinc-900 flex w-[100%] items-center gap-2 p-2 rounded-xl border border-zinc-800"
         >
           <input
             className="bg-transparent text-sm flex-1 mx-1 outline-none text-zinc-100 placeholder:text-zinc-500"
